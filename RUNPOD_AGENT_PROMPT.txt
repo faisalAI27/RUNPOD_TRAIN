@@ -1,0 +1,73 @@
+I am working on a deep learning project for ASL (American Sign Language) sign language detection using Faster R-CNN with PyTorch. I need you to set up the environment, train the model, and — most importantly — back up the trained checkpoint to GitHub so it is never lost when the pod shuts down. Here is the complete situation:
+
+Project repo: https://github.com/faisalAI27/RUNPOD_TRAIN.git
+
+What the repo contains:
+- src/ folder with all training code: config.py, dataset.py, transforms.py, dataloaders.py, model.py, train.py, utils.py, visualize.py
+- data/ folder — currently empty, needs to be filled with images
+- outputs/checkpoints/ — where the trained model will be saved as frcnn_best.pth
+- prepare_kaggle_data.py — script to download and prepare data from Kaggle if needed
+
+About the dataset:
+The dataset is the Kaggle ASL Alphabet dataset (grassknoted/asl-alphabet). It has 13,000 images split into data/train/ (9,100 images), data/valid/ (1,950 images), and data/test/ (1,950 images). Each image has a corresponding Pascal VOC XML annotation file with bounding box coordinates. All 26 letters A-Z are included as classes.
+
+About the model:
+Faster R-CNN with ResNet-50 + FPN backbone, pretrained on COCO, fine-tuned for 27 classes (26 letters + background). Training runs for 40 epochs using SGD with learning rate 0.005, StepLR scheduler (step=20, gamma=0.1), batch size 4. The best checkpoint (lowest validation loss) is saved automatically.
+
+Do the following steps in order:
+
+STEP 1 — Clone the repository:
+    cd /root && git clone https://github.com/faisalAI27/RUNPOD_TRAIN.git && cd RUNPOD_TRAIN
+
+STEP 2 — Install all dependencies:
+    pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121 && pip install Pillow matplotlib numpy kagglehub
+
+STEP 3 — Check if data is already uploaded:
+    Run: ls data/train/ | head -5
+    If images are already there (files ending in .jpg and .xml), skip to Step 4.
+    If the folder is empty, download and prepare the dataset from Kaggle by running:
+        export KAGGLE_USERNAME="FILL_THIS_IN" && export KAGGLE_KEY="FILL_THIS_IN" && export PYTHONPATH=. && python prepare_kaggle_data.py
+    If Kaggle credentials are needed, ask me for them and wait before proceeding.
+
+STEP 4 — Verify data is ready:
+    Confirm that data/train/ contains both .jpg image files and .xml annotation files. If both are present, proceed.
+
+STEP 5 — Start training:
+    export PYTHONPATH=. && python -u -m src.train 2>&1 | tee training_log.txt
+
+STEP 6 — Wait for training to finish:
+    Let it run all 40 epochs without interruption. When done, confirm that outputs/checkpoints/frcnn_best.pth exists and tell me its file size.
+
+STEP 7 — Show training results:
+    Show me the last 20 lines of training_log.txt so I can see the final loss values.
+
+STEP 8 — CRITICAL — Back up the checkpoint to GitHub so it is never lost:
+    Ask me for my GitHub personal access token BEFORE running this step and wait for my reply.
+    Then run:
+        apt-get install -y git-lfs 2>/dev/null || true
+        git lfs install
+        git lfs track "*.pth"
+        git config user.email "runpod@train.ai"
+        git config user.name "RunPod"
+        git add .gitattributes
+        git add outputs/checkpoints/frcnn_best.pth
+        git add training_log.txt
+        git commit -m "Add trained checkpoint frcnn_best.pth after 40 epochs"
+        git push https://faisalAI27:GITHUB_TOKEN_HERE@github.com/faisalAI27/RUNPOD_TRAIN.git main
+    Replace GITHUB_TOKEN_HERE with the token I give you.
+
+STEP 9 — Confirm the push:
+    Run: git log --oneline -3
+    Tell me the commit hash so I can verify on GitHub.
+
+Do not skip any step. Do not close or terminate anything. Report back after each step completes.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+NOTES FOR ME BEFORE PASTING:
+- GitHub Personal Access Token: github.com → Settings → Developer settings
+  → Personal access tokens → Generate new token → check "repo" scope → copy it.
+  Give it to the agent when it reaches Step 8.
+- Kaggle API Key: kaggle.com → profile → Settings → API → Create New Token
+  → opens kaggle.json → copy username and key values.
+  Give them to the agent only if Step 3 shows the data/train/ folder is empty.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
