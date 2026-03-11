@@ -1,0 +1,10 @@
+# Sign Language Faster R-CNN
+torch>=2.0.0
+torchvision>=0.15.0
+Pillow>=9.0
+matplotlib>=3.5
+numpy>=1.23
+fastapi>=0.100
+uvicorn>=0.23
+python-multipart>=0.0.6
+kagglehub>=0.3.0

@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pth
+
+# Outputs (keep folder structure, ignore large files)
+outputs/checkpoints/*.pth
+outputs/metrics/*.json
+outputs/metrics/*.png
+outputs/predictions/
+outputs/feature_maps/
+
+# Data images (upload separately to RunPod via scp/kaggle)
+data/train/*.jpg
+data/train/*.jpeg
+data/train/*.png
+data/valid/*.jpg
+data/valid/*.jpeg
+data/valid/*.png
+data/test/*.jpg
+data/test/*.jpeg
+data/test/*.png
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Venv
+.venv/
+venv/
